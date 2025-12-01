@@ -1,0 +1,112 @@
+// // Design Mode
+// setOption( "switchDes", "DESIGN" );
+// solver.clear();
+// autoSolverSetup();
+
+// CASE++;
+// Amb.alt_in = 22000;
+// Amb.MN_in = 0.41;
+// Amb.dTs_in = 0;
+// ITT_dmd = 800.0;
+// ShP.HPX = 2132; // They set the power turbine power as a power extraction from the HP shaft
+// // Don't let solver move turbine PRs in design
+// solver.removeIndependent("TrbH.S_map.ind_PRbase");
+// solver.removeIndependent("TrbL.S_map.ind_PRbase");
+// solver.removeIndependent("TrbP.S_map.ind_PRbase");
+
+// // Drop extra dependents so we end up with 4 total
+// solver.removeDependent("ShL.integrate_Nmech");
+// solver.removeDependent("TrbH.Cool.dep_BleedFlow2");
+
+// // Now explicitly ensure these are in the dep list:
+// solver.addDependent("ShH.integrate_Nmech");
+// solver.addDependent("ShP.integrate_Nmech");
+// solver.addDependent("dep_ITT");
+// solver.addDependent("TrbH.Cool.dep_BleedFlow1");
+
+// // solver.addDependent("dep_SHP");   // if you want a power target
+// BrnPri.FAR = .024225;
+
+// cout << solver.independentNames << endl;
+// cout << solver.dependentNames   << endl;
+
+// cout << "\n\nDesign Mode\n" << endl;
+// run();
+// printPride();
+// page.display();
+// rowSheet.update();
+
+// cout << "Perf.ITTC = " << Perf.ITTC << endl;
+// cout << "Perf.ESHP = " << Perf.ESHP << endl;
+
+//====================================================
+// DESIGN MODE — FULL 6×6 SOLVER FOR 3-SHAFT TURBOPROP
+//====================================================
+setOption("switchDes", "DESIGN");
+
+// Clear solver first
+solver.clear();
+
+// Baseline auto setup (initial constraints)
+autoSolverSetup();
+
+solver.clear();
+
+//-----------------------------------------------
+// Design operating point inputs
+//-----------------------------------------------
+CASE++;
+
+Amb.alt_in = 22000.0;
+Amb.MN_in  = 0.41;
+Amb.dTs_in = 0.0;
+
+// ITT_dmd = 900.0;      // degC or model units
+SHP_dmd = 2132.0;     // shaft horsepower demand (model units)
+
+ShP.HPX = SHP_dmd;    // initial guess for power shaft power
+
+solver.addIndependent("TrbH.S_map.ind_PRbase");
+solver.addIndependent("TrbL.S_map.ind_PRbase");
+solver.addIndependent("TrbP.S_map.ind_PRbase");
+// solver.addIndependent("ind_FAR");
+solver.addIndependent("ind_TCLA_NC_fracW");
+// solver.addIndependent("ind_TCLA_CH_fracW");
+
+solver.addDependent("ShH.integrate_Nmech");
+solver.addDependent("ShL.integrate_Nmech");
+solver.addDependent("ShP.integrate_Nmech");
+// solver.addDependent("dep_ITT");
+solver.addDependent("dep_NozPR");
+// solver.addDependent("dep_Flow");
+
+// BrnPri.FAR = .024225;
+
+//-----------------------------------------------
+// Debug dump of final solver settings
+//-----------------------------------------------
+cout << "\n=== DESIGN-MODE SOLVER SETUP (6×6) ===\n";
+cout << "Independents:\n" << solver.independentNames << endl;
+cout << "Dependents:\n"   << solver.dependentNames   << endl;
+
+//-----------------------------------------------
+// RUN DESIGN MODE
+//-----------------------------------------------
+cout << "\nRunning Design Mode...\n" << endl;
+
+run();
+printPride();
+page.display();
+rowSheet.update();
+//-----------------------------------------------
+// PRINT FINAL PERFORMANCE
+//-----------------------------------------------
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+
+// page.display();
+rowSheet.update();
+

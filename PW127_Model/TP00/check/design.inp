@@ -1,0 +1,57 @@
+setOption("switchDes", "DESIGN");
+
+solver.clear();
+
+autoSolverSetup();
+
+CASE++;
+
+Amb.alt_in = 0;
+Amb.MN_in  = 0;
+Amb.dTs_in = 0.0;
+
+SHP_dmd = 2750;
+
+ShP.HPX = SHP_dmd; 
+
+solver.addIndependent("ind_FAR");
+solver.addDependent("dep_Wfuel");
+
+// solver.addIndependent("ind_LPC_PR");
+solver.addDependent("dep_OPR_TO_match");
+
+solver.removeDependent("TrbH.Cool.dep_BleedFlow1");
+solver.removeDependent("TrbH.Cool.dep_BleedFlow2");
+
+cout << "\n=== DESIGN-MODE SOLVER SETUP (6×6) ===\n";
+cout << "Independents:\n" << solver.independentNames << endl;
+cout << "Dependents:\n"   << solver.dependentNames   << endl;
+cout << solver.independentNames << endl;
+
+cout << "\nRunning Design Mode...\n" << endl;
+
+run();
+printPride();
+page.display();
+// rowSheet.update();
+map_results.update();
+
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "Wfuel = " << BrnPri.Wfuel << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+cout << "SFC = " << Perf.BSFC << endl;
+cout << "FProp = " << Perf.Fprop << endl;
+cout << "Gear ratio = " << Perf.gearRatio << endl;
+cout << "NP = " << Perf.NP << endl;
+cout << "N3 = " << Perf.N3 << endl;
+cout << "LPC PR = " << CmpL.PR << endl;
+cout << "HPC PR = " << CmpH.PR << endl;
+cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "Case = " << CASE << endl;
+
+// rowSheet.update();
+
+

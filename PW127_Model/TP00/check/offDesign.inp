@@ -1,0 +1,293 @@
+setOption( "switchDes", "OFFDESIGN" );
+solver.clear();
+autoSolverSetup();
+cout << "\n\nOff-Design Mode\n" << endl;
+
+solver.addIndependent("ind_FAR");
+solver.addDependent("dep_NP");
+
+// solver.addIndependent("ind_Win");
+// solver.addDependent("dep_ITT");
+solver.addDependent("dep_OPR_TO_match");
+solver.addIndependent("ind_SHP");
+solver.addDependent("dep_SHP");
+
+//-------------------------------------------------
+// Max. continuous
+//-------------------------------------------------
+cout << "----------------------------------------------------------------------------------------" << endl;
+cout << "\nMax. continuous\n" << endl;
+
+CASE++;
+
+Amb.alt_in = 0;
+Amb.MN_in = 0;
+Amb.dTs_in = 0.0;
+
+cout << "Altitude = " << Amb.alt_in << endl;
+cout << "Mach number = " << Amb.MN_in << endl;
+
+SHP_dmd = 2475;
+NP_dmd = 1200;
+// ITT_dmd = 760;
+
+run();
+printPride();
+page.display();
+// rowSheet.update();
+map_results.update();
+
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "Wfuel = " << BrnPri.Wfuel << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+cout << "SFC = " << Perf.BSFC << endl;
+cout << "FProp = " << Perf.Fprop << endl;
+cout << "Gear ratio = " << Perf.gearRatio << endl;
+cout << "NP = " << Perf.NP << endl;
+cout << "N3 = " << Perf.N3 << endl;
+cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << TrbP.eff << endl;
+cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;
+
+//-------------------------------------------------
+// Max. climb
+//-------------------------------------------------
+cout << "----------------------------------------------------------------------------------------" << endl;
+cout << "\nMax. climb\n" << endl;
+
+CASE++;
+
+Amb.alt_in = 0;
+Amb.MN_in = 0;
+Amb.dTs_in = 0.0;
+
+cout << "Altitude = " << Amb.alt_in << endl;
+cout << "Mach number = " << Amb.MN_in << endl;
+
+SHP_dmd = 2192;
+NP_dmd = 1200;
+// ITT_dmd = 760;
+
+run();
+printPride();
+page.display();
+// rowSheet.update();
+map_results.update();
+
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "Wfuel = " << BrnPri.Wfuel << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+cout << "SFC = " << Perf.BSFC << endl;
+cout << "FProp = " << Perf.Fprop << endl;
+cout << "Gear ratio = " << Perf.gearRatio << endl;
+cout << "NP = " << Perf.NP << endl;
+cout << "N3 = " << Perf.N3 << endl;
+cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << TrbP.eff << endl;
+cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;
+
+//-------------------------------------------------
+// Max. cruise
+//-------------------------------------------------
+cout << "----------------------------------------------------------------------------------------" << endl;
+cout << "\nMax. cruise\n" << endl;
+
+CASE++;
+
+Amb.alt_in = 0;
+Amb.MN_in = 0;
+Amb.dTs_in = 0.0;
+
+cout << "Altitude = " << Amb.alt_in << endl;
+cout << "Mach number = " << Amb.MN_in << endl;
+
+SHP_dmd = 2132;
+NP_dmd = 1200;
+// ITT_dmd = 760;
+
+run();
+printPride();
+page.display();
+// rowSheet.update();
+map_results.update();
+
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "Wfuel = " << BrnPri.Wfuel << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+cout << "SFC = " << Perf.BSFC << endl;
+cout << "FProp = " << Perf.Fprop << endl;
+cout << "Gear ratio = " << Perf.gearRatio << endl;
+cout << "NP = " << Perf.NP << endl;
+cout << "N3 = " << Perf.N3 << endl;
+cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << TrbP.eff << endl;
+cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;
+
+//-------------------------------------------------
+// Approach
+//-------------------------------------------------
+cout << "----------------------------------------------------------------------------------------" << endl;
+cout << "\nApproach\n" << endl;
+
+CASE++;
+
+Amb.alt_in = 0;
+Amb.MN_in = 0;
+Amb.dTs_in = 0.0;
+
+cout << "Altitude = " << Amb.alt_in << endl;
+cout << "Mach number = " << Amb.MN_in << endl;
+
+SHP_dmd = 825;
+NP_dmd = 1200;
+// ITT_dmd = 760;
+
+run();
+printPride();
+page.display();
+// rowSheet.update();
+map_results.update();
+
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "Wfuel = " << BrnPri.Wfuel << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+cout << "SFC = " << Perf.BSFC << endl;
+cout << "FProp = " << Perf.Fprop << endl;
+cout << "Gear ratio = " << Perf.gearRatio << endl;
+cout << "NP = " << Perf.NP << endl;
+cout << "N3 = " << Perf.N3 << endl;
+cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << TrbP.eff << endl;
+cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;
+
+//-------------------------------------------------
+// Nominal idle
+//-------------------------------------------------
+cout << "----------------------------------------------------------------------------------------" << endl;
+cout << "\nNominal idle\n" << endl;
+
+CASE++;
+
+Amb.alt_in = 0;
+Amb.MN_in = 0;
+Amb.dTs_in = 0.0;
+
+cout << "Altitude = " << Amb.alt_in << endl;
+cout << "Mach number = " << Amb.MN_in << endl;
+
+SHP_dmd = 192;
+NP_dmd = 1200;
+// ITT_dmd = 760;
+
+run();
+printPride();
+page.display();
+// rowSheet.update();
+map_results.update();
+
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "Wfuel = " << BrnPri.Wfuel << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+cout << "SFC = " << Perf.BSFC << endl;
+cout << "FProp = " << Perf.Fprop << endl;
+cout << "Gear ratio = " << Perf.gearRatio << endl;
+cout << "NP = " << Perf.NP << endl;
+cout << "N3 = " << Perf.N3 << endl;
+cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << TrbP.eff << endl;
+cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;
+
+//-------------------------------------------------
+// Min. ground idle
+//-------------------------------------------------
+cout << "----------------------------------------------------------------------------------------" << endl;
+cout << "\nMin. ground idle\n" << endl;
+
+CASE++;
+
+Amb.alt_in = 0;
+Amb.MN_in = 0;
+Amb.dTs_in = 0.0;
+
+cout << "Altitude = " << Amb.alt_in << endl;
+cout << "Mach number = " << Amb.MN_in << endl;
+
+SHP_dmd = 45;
+NP_dmd = 1200;
+// ITT_dmd = 760;
+
+run();
+printPride();
+page.display();
+// rowSheet.update();
+map_results.update();
+
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "Wfuel = " << BrnPri.Wfuel << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+cout << "SFC = " << Perf.BSFC << endl;
+cout << "FProp = " << Perf.Fprop << endl;
+cout << "Gear ratio = " << Perf.gearRatio << endl;
+cout << "NP = " << Perf.NP << endl;
+cout << "N3 = " << Perf.N3 << endl;
+cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << TrbP.eff << endl;
+cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;
+
+//-------------------------------------------------
+// Min. flight idle
+//-------------------------------------------------
+cout << "----------------------------------------------------------------------------------------" << endl;
+cout << "\nMin. flight idle\n" << endl;
+
+CASE++;
+
+Amb.alt_in = 0;
+Amb.MN_in = 0;
+Amb.dTs_in = 0.0;
+
+cout << "Altitude = " << Amb.alt_in << endl;
+cout << "Mach number = " << Amb.MN_in << endl;
+
+SHP_dmd = 27;
+NP_dmd = 1200;
+// ITT_dmd = 760;
+
+run();
+printPride();
+page.display();
+// rowSheet.update();
+map_results.update();
+
+cout << "Final ITT   = " << Perf.ITTC  << endl;
+cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Final ESHP  = " << Perf.ESHP  << endl;
+cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+cout << "Wfuel = " << BrnPri.Wfuel << endl;
+cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+cout << "SFC = " << Perf.BSFC << endl;
+cout << "FProp = " << Perf.Fprop << endl;
+cout << "Gear ratio = " << Perf.gearRatio << endl;
+cout << "NP = " << Perf.NP << endl;
+cout << "N3 = " << Perf.N3 << endl;
+cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << TrbP.eff << endl;
+cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;

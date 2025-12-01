@@ -1,0 +1,563 @@
+//-------------------------------------------------
+//  cdm06_tp00: Common Development Model 06 (CDM06) Turboprop 00 (TP00)
+//  UNCLASSIFIED / Non-Proprietary
+//  Generic NPSS Turboprop
+//-------------------------------------------------
+MODELNAME = "cdm06_tp00";
+#include <InterpIncludes.ncp>
+
+//-------------------------------------------------
+// Set thermodynamic package
+//-------------------------------------------------
+setThermoPackage("GasTbl");
+
+//-------------------------------------------------
+// Option Variables
+//-------------------------------------------------
+Option switchDes {
+	description = "Determines if the overall model is in design or off-design mode";
+	IOstatus = "input";
+	rewritableValues = FALSE;
+	trigger = FALSE;
+	allowedValues = {"DESIGN","OFFDESIGN"};
+}
+
+//------------------------------------------------
+// Engine Definition
+//------------------------------------------------
+// Top-level assembly contains the following major groups of elements
+//  1. Free Stream definition - establish ambient conditions
+//  2. Inlet flow definition
+//  3. Core Stream definition - LPC, HPC, burner, HPT, LPT, and FPT
+//  4. Shaft definition - HP, LP and FPT shafts
+//  5. Performance calculations
+//  6. Component linkages
+//  7. Solver Settings
+
+// 1. Free Stream definition - establish ambient conditions
+
+//------------------------------
+// Ambient Amb 
+//------------------------------
+Element Ambient Amb {
+	// alt_in = 22000.;
+	// MN_in = 0.45;
+	// dTs_in = 0.;
+
+	alt_in = 0.;
+	MN_in = 0.;
+	dTs_in = 0.;
+}
+
+//------------------------------
+// InletStart FsEng
+//------------------------------
+Element InletStart FsEng {
+	AmbientName = "Amb";
+	W_in = 17.275; // New value
+	// W_in = 11.68; From example model
+}
+
+// 2. Inlet flow definition
+
+//------------------------------
+// Inlet InEng
+//------------------------------
+Element Inlet InEng {
+	Fl_O.MNdes = 0.41; 
+}
+
+//  3. Core Stream definition - LPC, HPC, burner, HPT, FPT, and nozzle
+
+//------------------------------
+// Low Pressure Compressor CmpL
+//------------------------------
+Element Compressor CmpL {
+	#include <CompressorRlineMap_NEPP_LPC.map> 
+	// Fl_O.MN = 0.4; 
+	// S_map.alphaMap = 0.00;
+	// S_map.RlineMapDes = 2.0;
+	// S_map.NcMapDes = 1.0;
+	// PRdes = 4; 
+	effDes = 0.87;
+}
+
+//------------------------------
+// High Pressure Compressor CmpH
+//------------------------------
+Element Compressor CmpH {
+	#include <CompressorRlineMap_NEPP_HPC.map> 
+	// Fl_O.MN = 0.3; 
+	// S_map.alphaMap = 0.00;
+	// S_map.RlineMapDes = 2.0;
+	// S_map.NcMapDes = 1.0;
+	PRdes = 9; 
+	effDes = 0.86; 
+}
+
+//------------------------------
+// Bleed B030
+//------------------------------
+Element Bleed B030 {
+	Fl_O.MN = 0.4; 
+
+	// Turbine Cooling and Leakage Air (TCLA) stream 1 (connects to turbine inlet)
+	BleedOutPort TCLA_NC {	              
+		fracW = 0.000;
+	}
+	// Turbine Cooling and Leakage Air (TCLA) stream 2 (connects to turbine exit)
+	BleedOutPort TCLA_CH {	              
+		fracW = 0.00;
+	} 
+}
+//------------------------------
+// FuelStart FusEng
+//------------------------------
+Element FuelStart FusEng {
+	LHV = 18400.; 
+}
+
+//------------------------------
+// Burner BrnPri
+//------------------------------
+Element Burner BrnPri {
+	effBase = 0.99;
+	dPqP_dmd = 0.07;
+	Fl_O.MN = 0.10;
+
+	switchBurn = "FAR";
+	// FAR = .0195225;
+}
+
+//------------------------------
+// High Pressure Turbine TrbH
+//------------------------------
+Element Turbine TrbH {
+	#include <TurbinePRmap_NEPP_HPT.map>
+	FlowStation F041;
+	Fl_O.MN = 0.30;
+	effDes = 0.84; // Change this
+	PRbase = 3; // Change this
+
+	// Turbine Cooling and Leakage Air (TCLA) stream 1 (introduced at turbine inlet)
+	InterStageBleedInPort TCLA_NC { 
+		Pfract  = 0.0;
+		diaPump = 0.0;
+	} 
+	
+	// Turbine Cooling and Leakage Air (TCLA) stream 2 (introduced at turbine exit)
+	InterStageBleedInPort TCLA_CH { 
+		Pfract  = 0.0;
+		diaPump = 0.0;
+	}
+
+	// Subelement to calculate the amount of cooling flow required to cool the turbine	
+	Subelement CoolIt Cool {
+		nStages = 1;
+		bldNameFirstRow = "TCLA_NC";
+		bldName = "TCLA_CH";
+		TvaneDes[0] = 2100;
+		TbladeDes[0] = 1930;
+		s_BldFirstRow = 1.5;  
+		s_Bld = 1.5;  
+	}   
+	void postexecute() { 
+		F041.copyFlow("Fl_I");
+		F041.add("TCLA_NC");
+		if ( switchDes == "DESIGN" ) {
+			Cool.run();
+		} 	 
+	} 
+}
+
+//------------------------------
+// Duct D043
+//------------------------------ 
+Element Duct D050 {
+	dPqP_dmd = 0.01;
+	Fl_O.MN = 0.3; 
+}
+
+// ------------------------------
+//      Turbine TrbL
+// ------------------------------
+Element Turbine TrbL {
+	#include <TurbinePRmap_NEPP_FPT.map>
+	FlowStation F044;
+	Fl_O.MN = 0.35;
+	PRbase = 1.5;
+	effDes = 0.87;
+}
+
+//------------------------------
+// Duct D050
+//------------------------------ 
+Element Duct D055 {
+	dPqP_dmd = 0.01;
+	Fl_O.MN = 0.3; 
+}
+
+//------------------------------
+// Free Power Turbine TrbP
+//------------------------------
+Element Turbine TrbP {
+	#include <TurbinePRmap_NEPP_FPT.map>
+	FlowStation F049;
+	Fl_O.MN = 0.35;
+	effDes = 0.83; //	
+	PRbase = 3.5;
+}
+
+//------------------------------
+// Duct D060
+//------------------------------
+Element Duct D060 {
+	dPqP_dmd = 0.025;
+	Fl_O.MN = 0.3; 
+}
+
+//------------------------------
+// Nozzle NozPri
+//------------------------------
+Element Nozzle NozPri {
+	switchType = "CONIC";
+	switchCoef = "CV";
+	Cv_in = 0.99;
+	CdTh_in = 0.96;
+	PsExhName = "Amb.Ps"; 
+}
+
+//------------------------------
+// End of Nozzle
+//------------------------------
+Element FlowEnd NozEnd {
+}
+
+// 4. Shaft definition - LP, HP and FPT shafts
+
+// ------------------------------
+//      Shaft ShL
+// ------------------------------
+Element Shaft ShL {
+	ShaftInputPort CmpL, TrbL;
+	Nmech = 28870;
+}
+
+//------------------------------
+// HP Shaft ShH
+//------------------------------
+Element Shaft ShH {
+	ShaftInputPort CmpH, TrbH;
+	Nmech = 34360.;
+}
+
+//------------------------------
+// Free Power Turbine Shaft ShP
+//------------------------------
+Element Shaft ShP {
+	ShaftInputPort TrbP;
+	HPX = 2750.; 
+	Nmech = 20575.;
+}
+
+// 5. Performance calculations
+
+//------------------------------
+// EngPerf Perf
+//------------------------------
+Element EngPerf Perf {
+
+	// Additional inputs
+	real gearRatio {
+		value = 1212./20575.; IOstatus = INPUT; units = RPM;
+		description = "Gearbox ratio";
+	}
+	real pwrToStaticThrust {
+		value = 2.5; IOstatus = INPUT; units = "lbf/hp";
+		description = "Conversion from shaft horsepower to static thrust";
+	}
+	real effProp {
+		value = 0.8; IOstatus = INPUT; units = NONE;
+		description = "Propeller efficiency"; // This value will be read from the maps
+	}
+	
+	// Additional outputs
+	real N1 {
+		value = 0.; IOstatus = OUTPUT; units = RPM;
+		description = "Low pressure shaft speed";
+	}
+	real N2 {
+		value = 0.; IOstatus = OUTPUT; units = RPM;
+		description = "High power turbine shaft speed";
+	} 
+	real N3 {
+		value = 0.; IOstatus = OUTPUT; units = RPM;
+		description = "Free power turbine shaft speed";
+	} 
+	real NP {
+		value = 0.; IOstatus = OUTPUT; units = RPM;
+		description = "Propeller speed";
+	}
+	real ITTC {
+		value = 0.; IOstatus = OUTPUT; units = CELSIUS;
+		description = "Free power turbine inlet temperature in degrees Celsius";
+	}
+	real Q {
+		value = 0.; IOstatus = OUTPUT; units = FT_LBF;
+		description = "Free power turbine actual shaft torque";
+	}
+	real SHP {
+		value = 0.; IOstatus = OUTPUT; units = HORSEPOWER;
+		description = "Free power turbine actual shaft power";
+	}
+	real THP {
+		value = 0.; IOstatus = OUTPUT; units = HORSEPOWER;
+		description = "Power delivered to the vehicle from thrust generated by engine exhaust";
+	}
+	real ESHP {
+		value = 0.; IOstatus = OUTPUT; units = HORSEPOWER;
+		description = "Equivalent shaft power (sum of shaft power and thrust power)";
+	}
+	real BSFC {
+		value = 0.; IOstatus = OUTPUT; units = LBM_PER_HR_HP;
+		description = "Brake specific fuel consumption";	
+	}
+	real ESFC {
+		value = 0.; IOstatus = OUTPUT; units = LBM_PER_HR_HP;
+		description = "Equivalent specific fuel consumption";	
+	}
+	real V {
+		value = 0.; IOstatus = OUTPUT; units = FT_PER_SEC;
+		description = "True air speed";
+	}
+	real Fprop {
+		value = 0.; IOstatus = OUTPUT; units = LBF;
+		description = "Propeller thrust";
+	}
+	real OPR {
+		value = CmpL.PRdes*CmpH.PRdes; IOstatus = OUTPUT;
+		description = "OPR";
+	}
+
+	
+	// Additional calculations
+	void postexecute() { 
+		
+		// Machine speeds
+		N1 = ShL.Nmech;
+		N2 = ShH.Nmech; 
+		N3 = ShP.Nmech;
+		NP = N3 * gearRatio;
+
+		// Torque
+		Q = ShP.trqIn;
+		
+		// Air speed
+		V = convertUnits("Amb.VTAS",FT_PER_SEC); 
+		
+		// Power and propeller thrust
+		SHP = ShP.pwrIn;
+		  
+		if ( V == 0 ) {
+			THP = Fn / pwrToStaticThrust;
+			Fprop = SHP * pwrToStaticThrust;
+		} else {
+			THP = (Fn * V / effProp) / C_HPtoFT_LBF_PER_SEC;   
+			Fprop = (SHP * effProp / V) * C_HPtoFT_LBF_PER_SEC;  
+		}
+
+		ESHP = SHP + THP;
+		// cout << "THP = " << THP << endl;
+		
+		// Specific fuel consumption
+		BSFC = (BrnPri.Wfuel / SHP) * C_HOURtoSEC; // Wfuel is in lbm/sec
+		ESFC = (BrnPri.Wfuel / ESHP) * C_HOURtoSEC;
+
+		// Temperature
+		ITTC = convertUnits("D055.Fl_O.Tt",CELSIUS);
+	}
+}
+
+// 6. Component linkages
+
+//------------------------------------------------------------------------
+// Component Links
+//------------------------------------------------------------------------
+
+// Core stream
+linkPorts( "FsEng.Fl_O"     , "InEng.Fl_I"    , "F010"  ) ;
+linkPorts( "InEng.Fl_O"     , "CmpL.Fl_I"     , "F020"  ) ;
+linkPorts( "CmpL.Fl_O"      , "CmpH.Fl_I"     , "F029" ) ;
+linkPorts( "CmpH.Fl_O"      , "B030.Fl_I"   , "F030"  ) ;
+linkPorts( "B030.Fl_O"      , "BrnPri.Fl_I"   , "F031"  ) ;
+linkPorts( "FusEng.Fu_O"    , "BrnPri.Fu_I"   , "F036" ) ;
+linkPorts( "BrnPri.Fl_O"    , "TrbH.Fl_I"      , "F040"  ) ;
+linkPorts( "TrbH.Fl_O"       , "D050.Fl_I"    , "F045" ) ;
+linkPorts( "D050.Fl_O"       , "TrbL.Fl_I"    , "F048" ) ;
+linkPorts( "TrbL.Fl_O"     , "D055.Fl_I"      , "F050"  ) ;
+linkPorts( "D055.Fl_O"     , "TrbP.Fl_I"      , "F055"  ) ;
+linkPorts( "TrbP.Fl_O"     , "D060.Fl_I"    , "F060"  ) ;
+linkPorts( "D060.Fl_O"     , "NozPri.Fl_I"      , "F070"  ) ;
+linkPorts( "NozPri.Fl_O"    , "NozEnd.Fl_I"   , "F090"  ) ;
+
+// Bleed Connections
+linkPorts( "B030.TCLA_NC" , "TrbH.TCLA_NC"  ,  "TrbH_NC" );
+linkPorts( "B030.TCLA_CH" , "TrbH.TCLA_CH"  ,  "TrbH_CH" );
+
+// Shaft Connections
+linkPorts( "CmpL.Sh_O"  , "ShL.CmpL" ,  "CmpL_Work"  ) ;
+linkPorts( "CmpH.Sh_O"  , "ShH.CmpH" ,  "CmpH_Work"  ) ;
+linkPorts( "TrbH.Sh_O"   , "ShH.TrbH"  ,  "TrbH_Work"   ) ;
+linkPorts( "TrbL.Sh_O"   , "ShL.TrbL"  ,  "TrbL_Work"   ) ;
+linkPorts( "TrbP.Sh_O"   , "ShP.TrbP"  ,  "TrbP_Work"   ) ;
+
+// 7. Solver Settings
+
+//------------------------------------------------------------------------
+// Model Demand, Independent & Dependent Variables
+//------------------------------------------------------------------------  
+
+// Define demand variables used in the dependents 
+real Wfuel_dmd {
+	value = 0.363825;
+}
+
+real SHP_dmd { 
+	value = 2192.;  units = HORSEPOWER;
+	description  = "Output shaft horsepower request";
+	iDescription = "Note this is a negative value";
+}
+
+real NozPR_dmd {
+	value = 1.05;
+}
+
+real ITT_dmd { 
+	value = 0.;  units = CELSIUS;
+	description  = "Inlet turbine temperature ITT request";
+}
+
+real NP_dmd { 
+	value = 0.;  units = RPM;
+	description = "Prop speed request";
+}
+
+real target_OPR { 
+	value = 14.7;
+	IOstatus = INPUT;
+	description = "Target OPR";
+}
+
+// vary engine air flow
+Independent ind_Win { 
+	varName = "FsEng.W_in"; 
+}
+
+// Define independent variables
+Independent ind_FAR {
+	varName = "BrnPri.FAR";
+	description = "Primary Burner Fuel-to-Air Ratio";
+}
+
+Independent ind_HPTPR {
+	varName = "TrbH.PRbase";
+	description = "High pressure turbine map pressure ratio";
+}
+
+Independent ind_FPTPR {
+	varName = "TrbP.PRbase";
+	description = "Free power turbine map pressure ratio";
+}
+
+Independent ind_SHP {
+	varName = "ShP.HPX";
+	description = "Free power turbine shaft horsepower";
+} 
+
+Independent ind_TCLA_NC_fracW {
+	varName = "B030.TCLA_NC.fracW";
+	description = "Bleed flow";
+}
+
+Independent ind_TCLA_CH_fracW {
+	varName = "B030.TCLA_CH.fracW";
+	description = "Bleed flow";
+}
+
+Independent ind_LPC_PR {
+	varName = "CmpL.PRdes";
+	autoSetup = TRUE;
+}
+
+// Define dependent variables
+Dependent con_ITT_Max_MCP { 
+	eq_lhs = "Perf.ITTC"; 
+	eq_rhs = "840.";
+}
+
+Dependent con_ITT_Max_TKO {
+	eq_lhs = "Perf.ITTC";
+	eq_rhs = "800.";
+}
+
+Dependent con_N1_Max { 
+	eq_lhs = "Perf.N1";
+	eq_rhs = "28870.";
+	description = "Maximum LP shaft speed";
+}
+
+Dependent dep_SHP {
+	eq_lhs = "Perf.SHP";
+	eq_rhs = "SHP_dmd";
+	constraintNameList = {"con_ITT_Max_TKO"};
+	limitTypes={"MAX"};
+	description = "Free power turbine shaft horsepower";
+} 
+
+Dependent dep_NP {
+	eq_lhs = "Perf.NP";
+	eq_rhs = "NP_dmd";
+	description = "Prop speed";
+} 
+
+Dependent dep_ITT {
+	eq_lhs = "Perf.ITTC";
+	eq_rhs = "ITT_dmd";
+	description = "Free power turbine inlet temperature set point";
+} 
+
+// Nozzle pressure ratio constraint: Pt_noz / Ps_amb ≈ NozPR_dmd
+Dependent dep_NozPR {
+    eq_lhs = "NozPri.Fl_I.Pt/Amb.Ps";  // actual nozzle PR
+    eq_rhs = "NozPR_dmd";              // target PR
+    description = "Primary nozzle total-to-ambient pressure ratio";
+}
+
+Dependent dep_Wfuel {
+    eq_lhs = "BrnPri.Wfuel";
+    eq_rhs = "Wfuel_dmd";
+    description = "Match burner fuel flow at design point";
+}
+
+Dependent dep_Wfuel_TO {
+    eq_lhs = "BrnPri.Wfuel";
+    eq_rhs = "0.363825";
+    description = "Match burner fuel flow at design point";
+}
+
+Dependent dep_OPR_TO_match {
+	eq_lhs = "CmpL.PRdes * CmpH.PRdes";
+	eq_rhs = "target_OPR";
+	description = "Match target OPR by varying LPC PR";
+}
+
+
+//-------------------------------------------------
+// Solver Settings
+//-------------------------------------------------
+solver.defaultTolerance = 0.001;
+solver.defaultToleranceType = "ABSOLUTE";  //ABSOLUTE
+solver.maxJacobians = 600;
+solver.maxIterations = 600;
+solver.defaultDxLimit = 0.02;
+

@@ -1,0 +1,27 @@
+// OutFileStream rowSheetStream { filename = "cdm06_tp00_row.out"; } 
+
+// DataViewer CaseRowViewer rowSheet { 
+
+//   caseHeaderBody = ""; 
+//   caseHeaderVars = {} 
+  
+//   variableList = {  "CASE:????? = CASE",
+//                     "solver.converged:??? = Converged",
+//                     "Perf.N1:?????.?? = N1",
+//                     "Perf.ITTC:????.?? = ITTC",
+//                     "Perf.SHP:?????.?? = SHP",
+//                     "Perf.ESHP:????.?? = ESHP",
+//                     "Perf.BSFC:??.???? = BSFC",
+//                     "Perf.ESFC:??.???? = ESFC",
+//                     "CmpL.Fl_I.Wc:??.??? = W1C",
+//                     "NozPri.PR:??.??? = NPR" ,
+//                     "NozPri.Fg:?????.??? = FG"
+//   }
+//   showMarks = FALSE; 
+//   //pageWidth = 124; 
+//   //pageHeight = 800; 
+  
+//   outStreamHandle = "rowSheetStream"; 
+
+// } 
+// //postsolverSequence.append("rowSheet");
