@@ -1,0 +1,42 @@
+OutFileStream rowSheetStream { filename = "PW127_map_results.csv"; } 
+
+DataViewer CaseRowViewer map_results { 
+
+  // caseHeaderBody = ""; 
+  // caseHeaderVars = {} 
+  
+  variableList = {  "CASE:?????",
+                    "solver.converged:??? = Converged",
+                    "CmpL.S_map.WcMap:?????.?? = LPC_Wc_Map",
+                    "CmpL.Fl_I.Wc:????.?? = LPC_Wc",
+                    "CmpL.S_map.PRmap:?????.?? = LPC_PR_Map",
+                    "CmpL.PR:????.?? = LPC_PR",
+                    "CmpL.S_map.effMap:??.???? = LPC_Eff_Map",
+                    "CmpL.eff:??.???? = LPC_Eff",
+                    "CmpL.S_map.s_WcDes:?????.??? = LPC_s_Wc", 
+                    "CmpL.S_map.s_PRdes:?????.??? = LPC_s_PR", 
+                    "CmpL.S_map.s_effDes:?????.??? = LPC_s_eff", 
+                    "CmpL.S_map.RlineMap:?????.??? = LPC_Rline", 
+                    "CmpH.S_map.WcMap:?????.?? = HPC_Wc_Map",
+                    "CmpH.Fl_I.Wc:????.?? = HPC_Wc",
+                    "CmpH.S_map.PRmap:?????.?? = HPC_PR_Map",
+                    "CmpH.PR:????.?? = HPC_PR",
+                    "CmpH.S_map.effMap:??.???? = HPC_Eff_Map",
+                    "CmpH.eff:??.???? = HPC_Eff",
+                    "CmpH.S_map.s_WcDes:?????.??? = HPC_s_Wc", 
+                    "CmpH.S_map.s_PRdes:?????.??? = HPC_s_PR", 
+                    "CmpH.S_map.s_effDes:?????.??? = HPC_s_eff", 
+                    "CmpH.S_map.RlineMap:?????.??? = HPC_Rline", 
+                    "BrnPri.Wfuel:?????.??? = Wfuel",
+                    "Perf.BSFC:????.??? = SFC", 
+                    "Perf.SHP:????.??? = SHP", 
+                    "Perf.ESHP:????.??? = ESHP"
+  }
+  showMarks = FALSE; 
+  //pageWidth = 124; 
+  //pageHeight = 800; 
+  
+  outStreamHandle = "rowSheetStream"; 
+
+} 
+//postsolverSequence.append("rowSheet");
