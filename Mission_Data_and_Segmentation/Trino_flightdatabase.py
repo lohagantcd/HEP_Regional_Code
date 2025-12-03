@@ -57,21 +57,27 @@ for _, flight in flights_list.iterrows():
     print(f"Arrival Time: {flight['arrival_time']}")
     print(f"Total Flight Time: {flight['flight_duration_str']}")
 
-    # flights_list.to_csv("C:\\Users\\Luke TCD Woek\\OneDrive - Trinity College Dublin\\Opensky_Flights\\flightlist_output.csv", 
-    #                 index=False, 
-    #                 quoting=csv.QUOTE_NONNUMERIC)
-    flights_list.to_csv("C:\\Users\\OHAGANLU\\OneDrive - Trinity College Dublin\\Opensky_Flights\\flightlist_output.csv", 
+    flights_list.to_csv("C:\\Users\\Luke TCD Woek\\OneDrive - Trinity College Dublin\\Opensky_Flights\\flightlist_output.csv", 
                     index=False, 
                     quoting=csv.QUOTE_NONNUMERIC)
+    # flights_list.to_csv("C:\\Users\\OHAGANLU\\OneDrive - Trinity College Dublin\\Opensky_Flights\\flightlist_output.csv", 
+    #                 index=False, 
+    #                 quoting=csv.QUOTE_NONNUMERIC)
 
     # flight = flights.iloc[0]
 
     # print(flight)
 
-    start_time = int(flight["firstseen"].timestamp())
-    stop_time = int(flight["lastseen"].timestamp())
+    BUFFER_SECONDS = 1800 
+    
+    # Apply buffer to the query window
+    query_start = int(flight["firstseen"].timestamp()) - BUFFER_SECONDS
+    query_end = int(flight["lastseen"].timestamp()) + BUFFER_SECONDS
 
-    query = f""" SELECT time, lat, lon, baroaltitude, geoaltitude, velocity, vertrate, heading FROM state_vectors_data4 WHERE icao24 = '{icao24}'
+    start_time = query_start
+    stop_time = query_end
+
+    query = f""" SELECT time, lat, lon, baroaltitude, geoaltitude, velocity, vertrate, onground, heading FROM state_vectors_data4 WHERE icao24 = '{icao24}'
     AND time BETWEEN {start_time} AND {stop_time} ORDER BY time """
 
     t0 = time.time()
@@ -95,8 +101,8 @@ for _, flight in flights_list.iterrows():
         else:
             print("Warning: no 'time' column found to convert.")
 
-        # save_path = r"C:\Users\Luke TCD Woek\OneDrive - Trinity College Dublin\Opensky_Flights"
-        save_path = r"C:\Users\OHAGANLU\OneDrive - Trinity College Dublin\Opensky_Flights\Raw Mission Data"
+        save_path = r"C:\Users\Luke TCD Woek\OneDrive - Trinity College Dublin\Opensky_Flights"
+        # save_path = r"C:\Users\OHAGANLU\OneDrive - Trinity College Dublin\Opensky_Flights\Raw Mission Data"
         os.makedirs(save_path, exist_ok=True)
         callsign = flight.get("callsign", "Unknown").strip()
         print(callsign)
