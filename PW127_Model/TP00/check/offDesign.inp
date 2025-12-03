@@ -133,6 +133,46 @@ cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << 
 cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;
 
 //-------------------------------------------------
+// Cruise alt = 15000ft MN = 0.45
+//-------------------------------------------------
+// cout << "----------------------------------------------------------------------------------------" << endl;
+// cout << "\nCruise\n" << endl;
+
+// CASE++;
+
+// Amb.alt_in = 15000;
+// Amb.MN_in = 0.45;
+// Amb.dTs_in = 0.0;
+
+// cout << "Altitude = " << Amb.alt_in << endl;
+// cout << "Mach number = " << Amb.MN_in << endl;
+
+// SHP_dmd = 1700;
+// NP_dmd = 1200;
+// // ITT_dmd = 760;
+
+// run();
+// printPride();
+// page.display();
+// // rowSheet.update();
+// map_results.update();
+
+// cout << "Final ITT   = " << Perf.ITTC  << endl;
+// cout << "Final SHP   = " << Perf.SHP   << endl;
+// cout << "Final ESHP  = " << Perf.ESHP  << endl;
+// cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
+// cout << "Wfuel = " << BrnPri.Wfuel << endl;
+// cout << "BrnPri.FAR = " << BrnPri.FAR << endl;
+// cout << "SFC = " << Perf.BSFC << endl;
+// cout << "FProp = " << Perf.Fprop << endl;
+// cout << "Gear ratio = " << Perf.gearRatio << endl;
+// cout << "NP = " << Perf.NP << endl;
+// cout << "N3 = " << Perf.N3 << endl;
+// cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+// cout << "LPC Eff: " << CmpL.eff << "  HPC Eff: " << CmpH.eff << "  PT Eff: " << TrbP.eff << endl;
+// cout << "LPC PR: "  << CmpL.PR  << "  HPC PR: "  << CmpH.PR  << endl;
+
+//-------------------------------------------------
 // Approach
 //-------------------------------------------------
 cout << "----------------------------------------------------------------------------------------" << endl;
@@ -147,7 +187,7 @@ Amb.dTs_in = 0.0;
 cout << "Altitude = " << Amb.alt_in << endl;
 cout << "Mach number = " << Amb.MN_in << endl;
 
-SHP_dmd = 825;
+SHP_dmd = 1450;
 NP_dmd = 1200;
 // ITT_dmd = 760;
 

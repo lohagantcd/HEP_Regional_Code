@@ -91,7 +91,7 @@ Element Compressor CmpH {
 	// S_map.alphaMap = 0.00;
 	// S_map.RlineMapDes = 2.0;
 	// S_map.NcMapDes = 1.0;
-	PRdes = 9; 
+	PRdes = 4.5; 
 	effDes = 0.86; 
 }
 
@@ -423,7 +423,7 @@ real Wfuel_dmd {
 }
 
 real SHP_dmd { 
-	value = 2192.;  units = HORSEPOWER;
+	value = 2750.;  units = HORSEPOWER;
 	description  = "Output shaft horsepower request";
 	iDescription = "Note this is a negative value";
 }
@@ -536,12 +536,6 @@ Dependent dep_NozPR {
 Dependent dep_Wfuel {
     eq_lhs = "BrnPri.Wfuel";
     eq_rhs = "Wfuel_dmd";
-    description = "Match burner fuel flow at design point";
-}
-
-Dependent dep_Wfuel_TO {
-    eq_lhs = "BrnPri.Wfuel";
-    eq_rhs = "0.363825";
     description = "Match burner fuel flow at design point";
 }
 

@@ -125,18 +125,6 @@ Subelement CompressorRlineMap S_map {
 		  WcorrMap = { 64.95,68.25,71.45,72.45,73.4 }
 		}
 	 } // end alphaMap = 0
-
-	alphaMap.interp = "linear" ;
-	alphaMap.extrap = "linear" ;
-
-	NcorrMap.interp = "lagrange3" ;
-	NcorrMap.extrap = "linear" ;
-
-	RlineMap.interp = "lagrange3" ;
-	RlineMap.extrap = "linear" ;
-
-	extrapIsError = 0;		
-	printExtrap = 0;
 	} // end TB_Wc
 
 	//  ----------------------------------------------------------------------
@@ -216,17 +204,6 @@ Subelement CompressorRlineMap S_map {
 		  PratioMap = { 5.591,5.581,5.397,5.103,4.228 }
 		}
 	 } // end alphaMap = 0
-	alphaMap.interp = "linear" ;
-	alphaMap.extrap = "linear" ;
-
-	NcorrMap.interp = "lagrange3" ;
-	NcorrMap.extrap = "linear" ;
-
-	RlineMap.interp = "lagrange3" ;
-	RlineMap.extrap = "linear" ;
-
-	extrapIsError = 0;		
-	printExtrap = 0;
 	} // end TB_PR
 
 	//  ----------------------------------------------------------------------
@@ -306,16 +283,5 @@ Subelement CompressorRlineMap S_map {
 		  effAdiabMap = { 0.7919,0.8097,0.8223,0.8149,0.7606 }
 		}
 	 } // end alphaMap = 0
-	alphaMap.interp = "linear" ;
-	alphaMap.extrap = "linear" ;
-
-	NcorrMap.interp = "lagrange3" ;
-	NcorrMap.extrap = "linear" ;
-
-	RlineMap.interp = "lagrange3" ;
-	RlineMap.extrap = "linear" ;
-
-	extrapIsError = 0;		
-	printExtrap = 0;
 	} // end TB_eff
 } // end S_map scope (CompressorRlineMap subelement)

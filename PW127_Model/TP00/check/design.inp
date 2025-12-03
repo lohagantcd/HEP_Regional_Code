@@ -38,6 +38,8 @@ map_results.update();
 
 cout << "Final ITT   = " << Perf.ITTC  << endl;
 cout << "Final SHP   = " << Perf.SHP   << endl;
+cout << "Fn = " << Perf.Fn << endl;
+cout << "V = " << Perf.V << endl;
 cout << "Final ESHP  = " << Perf.ESHP  << endl;
 cout << "Nozzle PR = " << NozPri.Fl_I.Pt/Amb.Ps << endl;
 cout << "Wfuel = " << BrnPri.Wfuel << endl;
@@ -50,6 +52,7 @@ cout << "N3 = " << Perf.N3 << endl;
 cout << "LPC PR = " << CmpL.PR << endl;
 cout << "HPC PR = " << CmpH.PR << endl;
 cout << "OPR = " << CmpL.PR*CmpH.PR << endl;
+cout << "AthCold = " << NozPri.Aexit << endl;
 cout << "Case = " << CASE << endl;
 
 // rowSheet.update();
