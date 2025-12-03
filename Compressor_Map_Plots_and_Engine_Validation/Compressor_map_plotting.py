@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-with open(r"C:\Users\Luke TCD Woek\OneDrive - Trinity College Dublin\NPSS\NPSS.EMI.14.0.1_LE\Models\PW127_Model\TP00\check\PW127_map_results.csv") as csvfile:
+with open(r"C:\Users\OHAGANLU\OneDrive - Trinity College Dublin\Regional_HEP_Project_Repo\PW127_Model\TP00\check\PW127_map_results.csv") as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
     map_results = list(reader)
 
@@ -817,6 +817,20 @@ ax8.plot(map_results_value_Wc_nom_idle_LPC_scaled, map_results_value_PR_nom_idle
 # Min. Ground Idle Point
 ax8.plot(map_results_value_Wc_min_ground_idle_LPC_scaled, map_results_value_PR_min_ground_idle_LPC_scaled, color = 'k', marker = 'o', label='Min. Ground Idle')
 
+ax6.set_xlabel('Scaled Corrected Mass Flow Rate $m\sqrt{T}/p$ (Wc) [lbm/s]')
+ax6.set_ylabel('Scaled Pressure Ratio (PR)')
+ax6.set_title('Scaled NEPP low-pressure compressor (LPC) PR vs Wc map')
+ax6.legend()
+
+ax7.set_xlabel('Scaled Corrected Mass Flow Rate $m\sqrt{T}/p$ (Wc) [lbm/s]')
+ax7.set_ylabel('Scaled Pressure Ratio (PR)')
+ax7.set_title('Scaled NEPP high-pressure compressor (HPC) PR vs Wc map')
+ax7.legend()
+
+ax8.set_xlabel('Scaled Corrected Mass Flow Rate $m\sqrt{T}/p$ (Wc) [lbm/s]')
+ax8.set_ylabel('Scaled Pressure Ratio (PR)')
+ax8.set_title('Scaled EEE low-pressure compressor (LPC) PR vs Wc map')
+ax8.legend()
 # ---------------------------------------------------------------------------------------------------------------
 # Relative error calculation for validation
 # ---------------------------------------------------------------------------------------------------------------
@@ -850,107 +864,140 @@ SHP_ref_nom_idle = 192
 SHP_ref_min_ground_idle = 45
 SHP_ref_min_flight_idle = 27
 
+ESHP_ref_design = 2880
+ESHP_ref_max_cont =  2619
+ESHP_ref_max_climb = 2302
+ESHP_ref_max_cruise = 2240
+# Take note that the reference value for ESHP for the following points are calculated based on a 5% contribution from exhaust thrust following the trends of the previous points
+ESHP_ref_approach = 866.25
+ESHP_ref_nom_idle = 201.6
+ESHP_ref_min_ground_idle = 47.25
+ESHP_ref_min_flight_idle = 28.35
+
 target_case_1 = 1
 SFC_model_design = 'SFC'
 Wf_model_design = 'Wfuel'
 SHP_model_design = 'SHP'
+ESHP_model_design = 'ESHP'
 SFC_design = df.loc[target_case_1, SFC_model_design]
 Wf_design = df.loc[target_case_1, Wf_model_design]
 SHP_design = df.loc[target_case_1, SHP_model_design]
+ESHP_design = df.loc[target_case_1, ESHP_model_design]
 SFC_rel_error_design = abs((SFC_ref_design - SFC_design)/SFC_design)*100
 Wf_rel_error_design = abs((Wf_ref_design - Wf_design)/Wf_design)*100
 SHP_rel_error_design = abs((SHP_ref_design - SHP_design)/SHP_design)*100
+ESHP_rel_error_design = abs((ESHP_ref_design - ESHP_design)/ESHP_design)*100
 
 target_case_2 = 2
 SFC_model_max_cont = 'SFC'
 Wf_model_max_cont = 'Wfuel'
 SHP_model_max_cont = 'SHP'
+ESHP_model_max_cont = 'ESHP'
 SFC_max_cont = df.loc[target_case_2, SFC_model_max_cont]
 Wf_max_cont = df.loc[target_case_2, Wf_model_max_cont]
 SHP_max_cont = df.loc[target_case_2, SHP_model_max_cont]
+ESHP_max_cont = df.loc[target_case_2, ESHP_model_max_cont]
 SFC_rel_error_max_cont = abs((SFC_ref_max_cont - SFC_max_cont)/SFC_max_cont)*100
 Wf_rel_error_max_cont = abs((Wf_ref_max_cont - Wf_max_cont)/Wf_max_cont)*100
 SHP_rel_error_max_cont = abs((SHP_ref_max_cont - SHP_max_cont)/SHP_max_cont)*100
+ESHP_rel_error_max_cont = abs((ESHP_ref_max_cont - ESHP_max_cont)/ESHP_max_cont)*100
 
 target_case_3 = 3
 SFC_model_max_climb = 'SFC'
 Wf_model_max_climb = 'Wfuel'
 SHP_model_max_climb = 'SHP'
+ESHP_model_max_climb = 'ESHP'
 SFC_max_climb = df.loc[target_case_3, SFC_model_max_climb]
 Wf_max_climb = df.loc[target_case_3, Wf_model_max_climb]
 SHP_max_climb = df.loc[target_case_3, SHP_model_max_climb]
+ESHP_max_climb = df.loc[target_case_3, ESHP_model_max_climb]
 SFC_rel_error_max_climb = abs((SFC_ref_max_climb - SFC_max_climb)/SFC_max_climb)*100
 Wf_rel_error_max_climb = abs((Wf_ref_max_climb - Wf_max_climb)/Wf_max_climb)*100
 SHP_rel_error_max_climb = abs((SHP_ref_max_climb - SHP_max_climb)/SHP_max_climb)*100
+ESHP_rel_error_max_climb = abs((ESHP_ref_max_climb - ESHP_max_climb)/ESHP_max_climb)*100
 
 target_case_4 = 4
 SFC_model_max_cruise = 'SFC'
 Wf_model_max_cruise = 'Wfuel'
 SHP_model_max_cruise = 'SHP'
+ESHP_model_max_cruise = 'ESHP'
 SFC_max_cruise = df.loc[target_case_4, SFC_model_max_cruise]
 Wf_max_cruise = df.loc[target_case_4, Wf_model_max_cruise]
 SHP_max_cruise = df.loc[target_case_4, SHP_model_max_cruise]
+ESHP_max_cruise = df.loc[target_case_4, ESHP_model_max_cruise]
 SFC_rel_error_max_cruise = abs((SFC_ref_max_cruise - SFC_max_cruise)/SFC_max_cruise)*100
 Wf_rel_error_max_cruise = abs((Wf_ref_max_cruise - Wf_max_cruise)/Wf_max_cruise)*100
 SHP_rel_error_max_cruise = abs((SHP_ref_max_cruise - SHP_max_cruise)/SHP_max_cruise)*100
-
+ESHP_rel_error_max_cruise = abs((ESHP_ref_max_cruise - ESHP_max_cruise)/ESHP_max_cruise)*100
 target_case_5 = 5
 SFC_model_approach = 'SFC'
 Wf_model_approach = 'Wfuel'
 SHP_model_approach = 'SHP'
+ESHP_model_approach = 'ESHP'
 SFC_approach = df.loc[target_case_5, SFC_model_approach]
 Wf_approach = df.loc[target_case_5, Wf_model_approach]
 SHP_approach = df.loc[target_case_5, SHP_model_approach]
+ESHP_approach = df.loc[target_case_5, ESHP_model_approach]
 SFC_rel_error_approach = abs((SFC_ref_approach - SFC_approach)/SFC_approach)*100
 Wf_rel_error_approach = abs((Wf_ref_approach - Wf_approach)/Wf_approach)*100
 SHP_rel_error_approach = abs((SHP_ref_approach - SHP_approach)/SHP_approach)*100
+ESHP_rel_error_approach = abs((ESHP_ref_approach - ESHP_approach)/ESHP_approach)*100
 
 target_case_6 = 6
 SFC_model_nom_idle = 'SFC'
 Wf_model_nom_idle = 'Wfuel'
 SHP_model_nom_idle = 'SHP'
+ESHP_model_nom_idle = 'ESHP'
 SFC_nom_idle = df.loc[target_case_6, SFC_model_nom_idle]
 Wf_nom_idle = df.loc[target_case_6, Wf_model_nom_idle]
 SHP_nom_idle = df.loc[target_case_6, SHP_model_nom_idle]
+ESHP_nom_idle = df.loc[target_case_6, ESHP_model_nom_idle]
 SFC_rel_error_nom_idle = abs((SFC_ref_nom_idle - SFC_nom_idle)/SFC_nom_idle)*100
 Wf_rel_error_nom_idle = abs((Wf_ref_nom_idle - Wf_nom_idle)/Wf_nom_idle)*100
 SHP_rel_error_nom_idle = abs((SHP_ref_nom_idle - SHP_nom_idle)/SHP_nom_idle)*100
+ESHP_rel_error_nom_idle = abs((ESHP_ref_nom_idle - ESHP_nom_idle)/ESHP_nom_idle)*100
 
 target_case_7 = 7
 SFC_model_min_ground_idle = 'SFC'
 Wf_model_min_ground_idle = 'Wfuel'
 SHP_model_min_ground_idle = 'SHP'
+ESHP_model_min_ground_idle = 'ESHP'
 SFC_min_ground_idle = df.loc[target_case_7, SFC_model_min_ground_idle]
 Wf_min_ground_idle = df.loc[target_case_7, Wf_model_min_ground_idle]
 SHP_min_ground_idle = df.loc[target_case_7, SHP_model_min_ground_idle]
+ESHP_min_ground_idle = df.loc[target_case_7, ESHP_model_min_ground_idle]
 SFC_rel_error_min_ground_idle = abs(((SFC_ref_min_ground_idle - SFC_min_ground_idle)/SFC_min_ground_idle)*100)
 Wf_rel_error_min_ground_idle = abs(((Wf_ref_min_ground_idle - Wf_min_ground_idle)/Wf_min_ground_idle)*100)
 SHP_rel_error_min_ground_idle = abs(((SHP_ref_min_ground_idle - SHP_min_ground_idle)/SHP_min_ground_idle)*100)
+ESHP_rel_error_min_ground_idle = abs(((ESHP_ref_min_ground_idle - ESHP_min_ground_idle)/ESHP_min_ground_idle)*100)
 
 target_case_8 = 8
 SFC_model_min_flight_idle = 'SFC'
 Wf_model_min_flight_idle = 'Wfuel'
 SHP_model_min_flight_idle = 'SHP'
+ESHP_model_min_flight_idle = 'ESHP'
 SFC_min_flight_idle = df.loc[target_case_8, SFC_model_min_flight_idle]
 Wf_min_flight_idle = df.loc[target_case_8, Wf_model_min_flight_idle]
 SHP_min_flight_idle = df.loc[target_case_8, SHP_model_min_flight_idle]
+ESHP_min_flight_idle = df.loc[target_case_8, ESHP_model_min_flight_idle]
 SFC_rel_error_min_flight_idle = abs(((SFC_ref_min_flight_idle - SFC_min_flight_idle)/SFC_min_flight_idle)*100)
 Wf_rel_error_min_flight_idle = abs(((Wf_ref_min_flight_idle - Wf_min_flight_idle)/Wf_min_flight_idle)*100)
 SHP_rel_error_min_flight_idle = abs(((SHP_ref_min_flight_idle - SHP_min_flight_idle)/SHP_min_flight_idle)*100)
+ESHP_rel_error_min_flight_idle = abs(((ESHP_ref_min_flight_idle - ESHP_min_flight_idle)/ESHP_min_flight_idle)*100)
 
-accumlated_error = SFC_rel_error_design + Wf_rel_error_design + SHP_rel_error_design + SFC_rel_error_max_cont + Wf_rel_error_max_cont + SHP_rel_error_max_cont + SFC_rel_error_max_climb + Wf_rel_error_max_climb + SHP_rel_error_max_climb + SFC_rel_error_max_cruise + Wf_rel_error_max_cruise + SHP_rel_error_max_cruise
+accumlated_error = SFC_rel_error_design + Wf_rel_error_design + SHP_rel_error_design + ESHP_rel_error_design + SFC_rel_error_max_cont + Wf_rel_error_max_cont + SHP_rel_error_max_cont + ESHP_rel_error_max_cont + SFC_rel_error_max_climb + Wf_rel_error_max_climb + SHP_rel_error_max_climb + ESHP_rel_error_max_climb + SFC_rel_error_max_cruise + Wf_rel_error_max_cruise + SHP_rel_error_max_cruise + ESHP_rel_error_max_cruise
 # + SFC_rel_error_approach + Wf_rel_error_approach + SHP_rel_error_approach + SFC_rel_error_nom_idle + Wf_rel_error_nom_idle + SHP_rel_error_nom_idle + SFC_rel_error_min_ground_idle + Wf_rel_error_min_ground_idle + SHP_rel_error_min_ground_idle + SFC_rel_error_min_flight_idle + Wf_rel_error_min_flight_idle + SHP_rel_error_min_flight_idle
 print(f"Accumulated error for validated operating points: {accumlated_error} %")
 
 errors = {
-    'Max. T/O': (SFC_rel_error_design, Wf_rel_error_design, SHP_rel_error_design), 
-    'Max. Continuous': (SFC_rel_error_max_cont, Wf_rel_error_max_cont, SHP_rel_error_max_cont), 
-    'Max. Climb': (SFC_rel_error_max_climb, Wf_rel_error_max_climb, SHP_rel_error_max_climb), 
-    'Max. Cruise': (SFC_rel_error_max_cruise, Wf_rel_error_max_cruise, SHP_rel_error_max_cruise)
-    # 'Approach': (SFC_rel_error_approach, Wf_rel_error_approach, SHP_rel_error_approach), 
-    # 'Nominal Idle': (SFC_rel_error_nom_idle, Wf_rel_error_nom_idle, SHP_rel_error_nom_idle), 
-    # 'Min. Ground Idle': (SFC_rel_error_min_ground_idle, Wf_rel_error_min_ground_idle, SHP_rel_error_min_ground_idle),
-    # 'Min. Flight Idle': (SFC_rel_error_min_flight_idle, Wf_rel_error_min_flight_idle, SHP_ref_min_ground_idle)
+    'Max. T/O': (SFC_rel_error_design, Wf_rel_error_design, SHP_rel_error_design, ESHP_rel_error_design), 
+    'Max. Continuous': (SFC_rel_error_max_cont, Wf_rel_error_max_cont, SHP_rel_error_max_cont, ESHP_rel_error_max_cont), 
+    'Max. Climb': (SFC_rel_error_max_climb, Wf_rel_error_max_climb, SHP_rel_error_max_climb, ESHP_rel_error_max_climb), 
+    'Max. Cruise': (SFC_rel_error_max_cruise, Wf_rel_error_max_cruise, SHP_rel_error_max_cruise, ESHP_rel_error_max_cruise)
+    # 'Approach': (SFC_rel_error_approach, Wf_rel_error_approach, SHP_rel_error_approach, ESHP_rel_error_approach), 
+    # 'Nominal Idle': (SFC_rel_error_nom_idle, Wf_rel_error_nom_idle, SHP_rel_error_nom_idle, ESHP_rel_error_nom_idle), 
+    # 'Min. Ground Idle': (SFC_rel_error_min_ground_idle, Wf_rel_error_min_ground_idle, SHP_rel_error_min_ground_idle, ESHP_rel_error_min_ground_idle),
+    # 'Min. Flight Idle': (SFC_rel_error_min_flight_idle, Wf_rel_error_min_flight_idle, SHP_rel_error_min_flight_idle, ESHP_rel_error_min_flight_idle)
 }
 
 labels = list(errors.keys())
@@ -958,15 +1005,17 @@ labels = list(errors.keys())
 sfc_values = [v[0] for v in errors.values()]
 wf_values  = [v[1] for v in errors.values()]
 shp_values = [v[2] for v in errors.values()]
+eshp_values = [v[3] for v in errors.values()]
 
 plot_data = {
-    'SFC [lbm/hr*hp] Error': sfc_values,
-    'Fuel Flow [lbm/s] Error': wf_values,
-    'SHP [hp] Error': shp_values
+    'SFC [lbm/hr*hp] Error %': sfc_values,
+    'Fuel Flow [lbm/s] Error %': wf_values,
+    'SHP [hp] Error %': shp_values,
+    'ESHP [hp] Error %': eshp_values
 }
 
 x = np.arange(len(labels))
-width = 0.25                
+width = 0.15                
 multiplier = 0              
 
 fig, ax3 = plt.subplots(layout='constrained', figsize=(12, 6))
@@ -974,7 +1023,7 @@ fig, ax3 = plt.subplots(layout='constrained', figsize=(12, 6))
 for attribute, measurement in plot_data.items():
     offset = width * multiplier
     rects = ax3.bar(x + offset, measurement, width, label=attribute)
-    ax3.bar_label(rects, padding=3, fmt='%.1f')
+    ax3.bar_label(rects, padding=4, fmt='%.1f')
     multiplier += 1
 
 ax3.set_ylabel('Relative Error %')
@@ -987,20 +1036,19 @@ plt.xticks(rotation=45, ha='right')
 
 ax3.legend(loc='upper left')
 
-accumlated_errors = [15.567552675393511, 14.703384132560998, 14.156954130527357, 13.950949758582096, 13.536330109012791, 13.187936510258384, 13.187900146652792, 12.776823770965196,
-                     12.135501811350421, 12.135542623495965, 12.135589527789172, 11.931191240499189, 11.1730549900714, 11.173029167030096, 11.172982262666443, 11.172982262666443,
-                     11.172982262666443, 11.172982262666443]
-HPC_PR = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5]
+# accumlated_errors = [15.567552675393511, 14.703384132560998, 14.156954130527357, 13.950949758582096, 13.536330109012791, 13.187936510258384, 13.187900146652792, 12.776823770965196,
+#                      12.135501811350421, 12.135542623495965, 12.135589527789172, 11.931191240499189, 11.1730549900714, 11.173029167030096, 11.172982262666443, 11.172982262666443,
+#                      11.172982262666443, 11.172982262666443]
+# HPC_PR = [3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5, 9, 9.5, 10, 10.5, 11, 11.5]
 
-fig, ax5 = plt.subplots(figsize=(10, 6))
-ax5.plot(HPC_PR, accumlated_errors, marker='o', color='b')
-ax5.set_xlabel('High-Pressure Compressor (HPC) Pressure Ratio')
-ax5.set_ylabel('Accumulated Relative Error %')
-ax5.set_title('Accumulated Relative Error vs HPC PR')
-ax5.set_xticks(HPC_PR)
-ax5.set_yticks(accumlated_errors)
-ax5.set_xlim([min(HPC_PR), max(HPC_PR)])
-plt.grid(True)
+# fig, ax5 = plt.subplots(figsize=(10, 6))
+# ax5.plot(HPC_PR, accumlated_errors, marker='o', color='b')
+# ax5.set_xlabel('High-Pressure Compressor (HPC) Pressure Ratio')
+# ax5.set_ylabel('Accumulated Relative Error %')
+# ax5.set_title('Accumulated Relative Error vs HPC PR')
+# ax5.set_xticks(HPC_PR)
+# ax5.set_yticks(accumlated_errors)
+# ax5.set_xlim([min(HPC_PR), max(HPC_PR)])
+# plt.grid(True)
 
 plt.show()
-
