@@ -1,0 +1,90 @@
+/*******************************************************************************
+� Copyright 2003. The U.S. Government, as Represented by the Administrator of
+the National Aeronautics and Space Administration (NASA). All rights reserved.
+Includes content licensed from the U.S. Government, National Aeronautics and
+Space Administration under United States Copyright Registration Numbers
+V3503D364 and V3482D344.
+� 2008-2015 NPSS� Consortium, www.NPSSConsortium.org/AllRightsReserved
+*******************************************************************************/
+
+/*******************************************************************************
+NPSS� software and related documentation is export controlled with an Export
+Control Classification Number(ECCN) of 9D991, controlled for Anti-Terrorism
+reasons, under U.S. Export Administration Regulations 15 CFR 730-774. It may
+not be transferred to a country checked under anti-terrorism on the Commerce
+Country Chart structure or to foreign nationals of those countries in the U.S.
+or abroad without first obtaining a license from the Bureau of Industry and
+Security, United States Department of Commerce. Violations are punishable by
+fine, imprisonment, or both.
+*******************************************************************************/
+
+// ******************************************************************
+// This data Map is generated from an existing NEPP map.
+// This map is based on data from NASA's Energy Efficient Engine (EEE) program. 
+// More information about EEE can be found at:
+// http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19840021807.pdf
+// ******************************************************************
+
+//  ---------------------------------------------------------------
+//  |    Fan outer diameter Compressor Maps
+//  ---------------------------------------------------------------
+//  |    Declaration of a new Subelement instance called S_map
+//  |    that is of the type CompressorRlineMap
+//  ---------------------------------------------------------------
+
+// Do NOT change these values!  They are specific to these maps.
+effDes = 0.8; // Unscaled map design point vane angle.
+
+
+//  ----------------------------------------------------------------------
+//  |    Declare a table (or function) named TB_Wc(real ALPHA, real SPED, real R)
+//  |    To satisfy the TB_Wc socket requirement.
+//  ---------------------------------------------------------------------- 
+
+// Fan OD corrected flow VS. stator angle, fraction of design speed, and R-line
+// Note: this map has ALPHA = 0 and ALPHA = 1, but both submaps are identical
+Table TB_eff( real J , real Beta) {
+    Beta = 35 {
+        eff  = {0.402156231, 0.690931709, 0.875378776, 0.879621065, 0.855188032, 0.826672195, 0.789952474, 0.747102166, 0.70422634, 0.636809033, 0.514088865, 0.401594845}
+        J = {0.66, 0.65, 0.60, 0.55, 0.50, 0.45, 0.40, 0.35, 0.31, 0.25, 0.20, 0.15}
+    }
+    Beta = 30 {
+        eff  = {0.400433793, 0.881810449, 0.873766134, 0.843190082, 0.80238799, 0.751340719, 0.68391137, 0.606236843, 0.47327918}
+        J = {0.55, 0.50, 0.45, 0.40, 0.35, 0.30, 0.25, 0.20, 0.15}
+    }
+    Beta = 25 {
+        eff  = {0.400708104, 0.668990155, 0.882097518, 0.855629745, 0.800493334, 0.741242265, 0.667663257, 0.542903013, 0.422231909}
+        J = {0.46, 0.45, 0.40, 0.35, 0.30, 0.25, 0.20, 0.15, 0.10}
+    }
+    Beta = 20 {
+        eff  = {0.400950518, 0.843343186, 0.857817849, 0.800633679, 0.718863632, 0.606389946, 0.471378144}
+        J = {0.38, 0.35, 0.30, 0.25, 0.20, 0.15, 0.10}
+    }
+    Beta = 15 {
+        eff  = {0.401161035, 0.843636634, 0.778255045, 0.66782274, 0.51642886}
+        J = {0.30, 0.25, 0.20, 0.15, 0.10}
+    }
+    Beta = 10 {
+        eff  = {0.401352415, 0.798726264, 0.739487954, 0.581957174}
+        J = {0.24, 0.20, 0.15, 0.10}
+    }
+    Beta = 5 {
+        eff  = {0.401524656, 0.704682416, 0.631103409}
+        J = {0.18, 0.15, 0.10}
+    }
+    Beta = 0 {
+        eff  = {0.401684139, 0.577861654, 0.55948923}
+        J = {0.12, 0.10, 0.08}
+    }
+    }
+
+	Beta.interp = "linear" ;
+	Beta.extrap = "linear" ;
+
+	eta.interp = "lagrange3" ;
+	eta.extrap = "linear" ;
+
+	extrapIsError = 0;
+	printExtrap = 0;
+  
+}  //end TB_CP
